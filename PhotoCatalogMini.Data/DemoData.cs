@@ -16,14 +16,38 @@ namespace PhotoCatalogMini.Data
                 return;
             }
 
+            var photographer = db.Photographers.FirstOrDefault(p => p.Name == "Иван Петров");
+            if (photographer is null)
+            {
+                photographer = new Photographer
+                {
+                    PhotographerId = Guid.NewGuid(),
+                    Name = "Иван Петров"
+                };
+                db.Photographers.Add(photographer);
+            }
+
+            var category = db.Categories.FirstOrDefault(c => c.Name == "Пейзаж");
+            if (category is null)
+            {
+                category = new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    Name = "Пейзаж"
+                };
+                db.Categories.Add(category);
+            }
+
             var photo = new Photo
             {
                 PhotoId = Guid.NewGuid(),
                 Title = "Утро над езерото",
-                Photographer = "Иван Петров",
-                Category = "Пейзаж",
                 Location = "Рила",
-                Description = "Мъгла над планинско езеро призори."
+                Description = "Мъгла над планинско езеро призори.",
+                PhotographerId = photographer.PhotographerId,
+                Photographer = photographer,
+                CategoryId = category.CategoryId,
+                Category = category
             };
 
             db.Photos.Add(photo);
