@@ -22,31 +22,46 @@ namespace PhotoCatalogMini.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Category", b =>
+                {
+                    b.Property<Guid>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photo", b =>
                 {
                     b.Property<Guid>("PhotoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Photographer")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("PhotographerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -55,7 +70,56 @@ namespace PhotoCatalogMini.Data.Migrations
 
                     b.HasKey("PhotoId");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("PhotographerId");
+
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photographer", b =>
+                {
+                    b.Property<Guid>("PhotographerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PhotographerId");
+
+                    b.ToTable("Photographers");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photo", b =>
+                {
+                    b.HasOne("PhotoCatalogMini.Data.Entities.Category", "Category")
+                        .WithMany("Photos")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PhotoCatalogMini.Data.Entities.Photographer", "Photographer")
+                        .WithMany("Photos")
+                        .HasForeignKey("PhotographerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Photographer");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Category", b =>
+                {
+                    b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photographer", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }
