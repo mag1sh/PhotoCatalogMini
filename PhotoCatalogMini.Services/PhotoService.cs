@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PhotoCatalogMini.Data;
 using PhotoCatalogMini.Data.Entities;
 using PhotoCatalogMini.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace PhotoCatalogMini.Services
 {
@@ -20,7 +21,11 @@ namespace PhotoCatalogMini.Services
 
         public List<Photo> GetAll()
         {
-            return _context.Photos.OrderBy(p => p.Title).ToList();
+            return _context.Photos
+                .Include(p => p.Photographer)
+                .Include(p => p.Category)
+                .OrderBy(p => p.Title)
+                .ToList();
         }
     }
 }
