@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PhotoCatalogMini.Data;
+
 namespace PhotoCatalogMini.Web
 {
     public class Program
@@ -8,6 +11,9 @@ namespace PhotoCatalogMini.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<PhotoCatalogDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
