@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PhotoCatalogMini.Data;
+using PhotoCatalogMini.Services.Contracts;
 
 namespace PhotoCatalogMini.Web.Controllers
 {
     public class PhotosController : Controller
     {
-        private readonly PhotoCatalogDbContext _dbContext;
+        private readonly IPhotoService _photoService;
 
-        public PhotosController(PhotoCatalogDbContext dbContext)
+        public PhotosController(IPhotoService photoService)
         {
-            _dbContext = dbContext;
+            _photoService = photoService;
         }
 
         public IActionResult Index()
         {
-            var photos = _dbContext.Photos.OrderBy(p => p.Title).ToList();
+            var photos = _photoService.GetAll();
             return View(photos);
         }
 
