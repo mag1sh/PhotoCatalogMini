@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PhotoCatalogMini.Data;
+using PhotoCatalogMini.Services;
+using PhotoCatalogMini.Services.Contracts;
 
 namespace PhotoCatalogMini.Web
 {
@@ -14,6 +16,8 @@ namespace PhotoCatalogMini.Web
 
             builder.Services.AddDbContext<PhotoCatalogDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
 
             var app = builder.Build();
 
