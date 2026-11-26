@@ -11,5 +11,6 @@ namespace PhotoCatalogMini.Services.Contracts
     public interface IPhotoService
     {
         Task<List<PhotoListDto>> GetAll();
+        Task CreateAsync(CreatePhotoDto dto);
     }
 }

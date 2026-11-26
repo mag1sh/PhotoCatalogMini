@@ -35,5 +35,53 @@ namespace PhotoCatalogMini.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task CreateAsync(CreatePhotoDto dto)
+        {
+            var photographer = await _context.Photographers
+                .FirstOrDefaultAsync(p => p.Name == dto.PhotographerName);
+            if (photographer is null)
+            {
+                photographer = new Photographer
+                {
+                    PhotographerId = Guid.NewGuid(),
+                    Name = dto.PhotographerName
+                };
+                _context.Photographers.Add(photographer);
+            }
+
+            var photo = new Photo
+            {
+                PhotoId = Guid.NewGuid(),
+                Title = dto.Title,
+                Location = dto.Location,
+                Description = dto.Description,
+                PhotographerId = photographer.PhotographerId,
+                Photographer = photographer
+            };
+
+            foreach (var name in dto.Categories)
+            {
+                var category = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.Name == name);
+                if (category is null)
+                {
+                    category = new Category
+                    {
+                        CategoryId = Guid.NewGuid(),
+                        Name = name
+                    };
+                    _context.Categories.Add(category);
+                }
+                photo.PhotoCategories.Add(new PhotoCategory
+                {
+                    PhotoId = photo.PhotoId,
+                    CategoryId = category.CategoryId,
+                    Category = category
+                });
+            }
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+        }
     }
 }
