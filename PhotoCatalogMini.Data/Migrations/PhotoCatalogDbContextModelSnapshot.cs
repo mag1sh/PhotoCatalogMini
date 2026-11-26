@@ -47,9 +47,6 @@ namespace PhotoCatalogMini.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -70,11 +67,24 @@ namespace PhotoCatalogMini.Data.Migrations
 
                     b.HasKey("PhotoId");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("PhotographerId");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.PhotoCategory", b =>
+                {
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PhotoId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("PhotoCategories");
                 });
 
             modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photographer", b =>
@@ -95,26 +105,42 @@ namespace PhotoCatalogMini.Data.Migrations
 
             modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photo", b =>
                 {
-                    b.HasOne("PhotoCatalogMini.Data.Entities.Category", "Category")
-                        .WithMany("Photos")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("PhotoCatalogMini.Data.Entities.Photographer", "Photographer")
                         .WithMany("Photos")
                         .HasForeignKey("PhotographerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Photographer");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.PhotoCategory", b =>
+                {
+                    b.HasOne("PhotoCatalogMini.Data.Entities.Category", "Category")
+                        .WithMany("PhotoCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PhotoCatalogMini.Data.Entities.Photo", "Photo")
+                        .WithMany("PhotoCategories")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
-                    b.Navigation("Photographer");
+                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Category", b =>
                 {
-                    b.Navigation("Photos");
+                    b.Navigation("PhotoCategories");
+                });
+
+            modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photo", b =>
+                {
+                    b.Navigation("PhotoCategories");
                 });
 
             modelBuilder.Entity("PhotoCatalogMini.Data.Entities.Photographer", b =>
