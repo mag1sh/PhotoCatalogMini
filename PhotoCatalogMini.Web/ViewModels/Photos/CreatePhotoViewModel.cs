@@ -16,7 +16,7 @@ namespace PhotoCatalogMini.Web.ViewModels.Photos
 
         [Display(Name = "Категория (разделени със запетая")]
         [Required(ErrorMessage = "Въведи поне една категория.")]
-        public List<string> Categories { get; set; } = new();
+        public string Categories { get; set; } = string.Empty;
 
         [Display(Name = "Място на заснемане")]
         [Required(ErrorMessage = "Мястото е задължително.")]
