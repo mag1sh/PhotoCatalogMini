@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PhotoCatalogMini.Data.Entities.Photo>
+﻿@model PhotoIndexViewModel
 @{
 	ViewData["Title"] = "Снимки";
 }
@@ -7,7 +7,7 @@
 
 <a asp-action="Create" class="bnt bnt-primary mb-3">Добави нови снимки</a>
 
-@if (!Model.Any())
+@if (!Model.Photos.Any())
 {
 	<p>Все още няма добавени снимки.</p>
 }
@@ -25,12 +25,12 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var photo in Model)
+			@foreach (var photo in Model.Photos)
 			{
 				<tr>
 					<td>@photo.Title</td>
-					<td>@photo.Photographer.Name</td>
-					<td>@string.Join(", ", photo.PhotoCategories.Select(pc => pc.Category.Name))</td>
+					<td>@photo.PhotographerName</td>
+					<td>@string.Join(", ", photo.Categories)</td>
 					<td>@photo.Location</td>
 					<td>@photo.Description</td>
 				</tr>
