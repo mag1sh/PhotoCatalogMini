@@ -7,6 +7,7 @@ using PhotoCatalogMini.Data;
 using PhotoCatalogMini.Data.Entities;
 using PhotoCatalogMini.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
+using PhotoCatalogMini.Services.DTOs.Photos;
 
 namespace PhotoCatalogMini.Services
 {
@@ -19,14 +20,20 @@ namespace PhotoCatalogMini.Services
             _context = context;
         }
 
-        public List<Photo> GetAll()
+        public async Task<List<PhotoListDto>> GetAll()    
         {
-            return _context.Photos
-                .Include(p => p.Photographer)
-                .Include(p => p.PhotoCategories)
-                .ThenInclude(pc => pc.Category)
+            return await _context.Photos
                 .OrderBy(p => p.Title)
-                .ToList();
+                .Select(p => new PhotoListDto
+                {
+                    PhotoId = p.PhotoId,
+                    Title = p.Title,
+                    PhotographerName = p.Photographer.Name,
+                    Categories = p.PhotoCategories.Select(pc => pc.Category.Name).ToList(),
+                    Location = p.Location,
+                    Description = p.Description
+                })
+                .ToListAsync();
         }
     }
 }

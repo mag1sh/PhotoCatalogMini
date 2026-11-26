@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PhotoCatalogMini.Data;
 using PhotoCatalogMini.Services.Contracts;
+using PhotoCatalogMini.Web.ViewModels.Photos;
+using System.Threading.Tasks;
 
 namespace PhotoCatalogMini.Web.Controllers
 {
@@ -13,10 +15,13 @@ namespace PhotoCatalogMini.Web.Controllers
             _photoService = photoService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var photos = _photoService.GetAll();
-            return View(photos);
+            var model = new PhotoIndexViewModel
+            {
+                Photos = await _photoService.GetAll()
+            };
+            return View(model);
         }
 
         public IActionResult Create()

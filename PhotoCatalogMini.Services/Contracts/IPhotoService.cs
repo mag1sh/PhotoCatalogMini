@@ -1,4 +1,5 @@
 ﻿using PhotoCatalogMini.Data.Entities;
+using PhotoCatalogMini.Services.DTOs.Photos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PhotoCatalogMini.Services.Contracts
 {
     public interface IPhotoService
     {
-        List<Photo> GetAll();
+        Task<List<PhotoListDto>> GetAll();
     }
 }
