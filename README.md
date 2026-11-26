@@ -18,7 +18,9 @@
 
 \-Сервизен слой: IPhotoService и PhotoService
 
-\-Страница /Photos със списък на снимките
+\-DTO (PhotoListDto) в Services и ViewModel (PhotoIndexViewModel) в Web
+
+\-Страница /Photos показва заглавие, фотограф, категории, място и описание
 
 
 
