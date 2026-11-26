@@ -10,7 +10,7 @@
 
 \-Entity Photo: заглавие, фотограф, категория, място на заснемане, описание
 
-\-Entities: Photo, Photographer, Category (връзки едно към много)
+\-Entities: Photo, Photographer, Category; Photo-Category е много към много чрез PhotoCategory със съставен ключ
 
 \-PhotoCatalogContext с Fluent API и миграция InitialCreate
 
