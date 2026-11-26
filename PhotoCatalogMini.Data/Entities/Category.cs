@@ -10,6 +10,7 @@ namespace PhotoCatalogMini.Data.Entities
     {
         public Guid CategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public ICollection<Photo> Photos { get; set; } = new List<Photo>();
+        
+        public ICollection<PhotoCategory> PhotoCategories { get; set; } = new List<PhotoCategory>();
     }
 }

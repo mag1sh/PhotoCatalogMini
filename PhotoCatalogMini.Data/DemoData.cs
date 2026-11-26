@@ -46,9 +46,14 @@ namespace PhotoCatalogMini.Data
                 Description = "Мъгла над планинско езеро призори.",
                 PhotographerId = photographer.PhotographerId,
                 Photographer = photographer,
+            };
+
+            photo.PhotoCategories.Add(new PhotoCategory
+            {
+                PhotoId = photo.PhotoId,
                 CategoryId = category.CategoryId,
                 Category = category
-            };
+            });
 
             db.Photos.Add(photo);
             db.SaveChanges();

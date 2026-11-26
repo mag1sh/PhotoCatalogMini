@@ -18,6 +18,7 @@ namespace PhotoCatalogMini.Data
         public DbSet<Photographer> Photographers => Set<Photographer>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Photo> Photos => Set<Photo>();
+        public DbSet<PhotoCategory> PhotoCategories => Set<PhotoCategory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,10 +48,19 @@ namespace PhotoCatalogMini.Data
                       .WithMany(ph => ph.Photos)
                       .HasForeignKey(p => p.PhotographerId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
 
-                entity.HasOne(p => p.Category)
-                      .WithMany(c => c.Photos)
-                      .HasForeignKey(p => p.CategoryId)
+            modelBuilder.Entity<PhotoCategory>(entity =>
+            {
+                entity.HasKey(pc => new { pc.PhotoId, pc.CategoryId });
+
+                entity.HasOne(pc => pc.Photo)
+                      .WithMany(p => p.PhotoCategories)
+                      .HasForeignKey(pc => pc.PhotoId);
+
+                entity.HasOne(pc => pc.Category)
+                      .WithMany(c => c.PhotoCategories)
+                      .HasForeignKey(pc => pc.CategoryId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
         }

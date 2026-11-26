@@ -16,7 +16,6 @@ namespace PhotoCatalogMini.Data.Entities
         public Guid PhotographerId { get; set; }
         public Photographer Photographer { get; set; } = null!;
 
-        public Guid CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public ICollection<PhotoCategory> PhotoCategories { get; set; } = new List<PhotoCategory>();
     }
 }

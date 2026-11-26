@@ -23,7 +23,8 @@ namespace PhotoCatalogMini.Services
         {
             return _context.Photos
                 .Include(p => p.Photographer)
-                .Include(p => p.Category)
+                .Include(p => p.PhotoCategories)
+                .ThenInclude(pc => pc.Category)
                 .OrderBy(p => p.Title)
                 .ToList();
         }
